@@ -70,9 +70,3 @@ spec:
         - name: n8n-claim0
           persistentVolumeClaim:
             claimName: n8n-claim0
-        - name: n8n-secret
-          secret:
-            secretName: n8n-secret
-        - name: postgres-secret
-          secret:
-            secretName: postgres-secret

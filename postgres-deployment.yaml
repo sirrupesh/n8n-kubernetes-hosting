@@ -25,11 +25,11 @@ spec:
           name: postgres
           resources:
             limits:
-              cpu: "4"
-              memory: 4Gi
-            requests:
-              cpu: "1"
+              cpu: "2"
               memory: 2Gi
+            requests:
+              cpu: "500m"
+              memory: 1Gi
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -72,9 +72,6 @@ spec:
         - name: postgresql-pv
           persistentVolumeClaim:
             claimName: postgresql-pv
-        - name: postgres-secret
-          secret:
-            secretName: postgres-secret
         - name: init-data
           configMap:
             name: init-data
