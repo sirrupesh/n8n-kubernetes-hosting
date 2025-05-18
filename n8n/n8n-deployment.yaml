@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: n8n
-  namespace: n8n
+  namespace: my-ns-101
   labels:
     app: n8n
 spec:

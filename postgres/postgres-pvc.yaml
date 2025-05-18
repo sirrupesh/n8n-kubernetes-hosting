@@ -2,7 +2,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: postgresql-pv
-  namespace: n8n
+  namespace: my-ns-101
 spec:
   storageClassName: ebs-sc
   accessModes:

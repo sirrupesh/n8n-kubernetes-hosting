@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: init-data
-  namespace: n8n
+  namespace: my-ns-101
 data:
   init-data.sh: |
     #!/bin/sh
