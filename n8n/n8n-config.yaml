@@ -4,4 +4,23 @@ metadata:
   name: n8n-config
   namespace: n8n
 data:
+  # AWS Configuration
   certificate-arn: "arn:aws:acm:ap-south-1:170510051021:certificate/d2518321-007f-4e6c-b629-6a6ff8ffc64c"
+  
+  # N8N Configuration
+  N8N_PORT: "5678"
+  N8N_PROTOCOL: "https"
+  N8N_HOST: "workflow.yourdomain.com"  # Replace with your actual domain
+  
+  # Security Settings
+  N8N_SECURE_COOKIE: "true"
+  N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+  
+  # Feature Flags
+  N8N_RUNNERS_ENABLED: "true"
+  N8N_METRICS_ENABLED: "true"
+  
+  # Database Configuration
+  DB_TYPE: "postgresdb"
+  DB_POSTGRESDB_HOST: "postgres-service"
+  DB_POSTGRESDB_DATABASE: "n8n"
