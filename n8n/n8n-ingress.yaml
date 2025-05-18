@@ -31,6 +31,13 @@ kind: Ingress
 metadata:
   name: n8n-ingress
   namespace: n8n
+  annotations:
+    # Enable HTTPS and redirect HTTP to HTTPS
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    # Certificate ARN from ConfigMap - will be replaced by Kustomize
+    alb.ingress.kubernetes.io/certificate-arn: "PLACEHOLDER_CERTIFICATE_ARN"
 spec:
   # this matches the name of IngressClass.
   # this can be omitted if you have a default ingressClass in cluster: the one with ingressclass.kubernetes.io/is-default-class: "true"  annotation
@@ -44,4 +51,4 @@ spec:
               service:
                 name: n8n
                 port:
-                  number: 5678
+                  name: http
