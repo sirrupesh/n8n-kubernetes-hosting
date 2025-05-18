@@ -9,6 +9,7 @@ This repository contains Kubernetes manifests for deploying n8n workflow automat
 - **PostgreSQL Database**: Integrated PostgreSQL database configuration
 - **Reusable Components**: Common configurations shared across environments
 - **Environment-specific Secrets**: Separate secrets for each environment
+- **Environment-specific Configs**: Separate configuration for each environment
 - **Easy Deployment**: Simple scripts for applying and comparing configurations
 
 ## Project Structure
@@ -24,6 +25,7 @@ This repository contains Kubernetes manifests for deploying n8n workflow automat
 │   ├── common/             # Shared configurations
 │   │   ├── resources-*.yaml # Resource profiles (small, medium, large)
 │   │   ├── env-*.yaml      # Environment-specific variables
+│   │   ├── config-*.env    # Environment-specific configurations
 │   │   └── secrets-*.env   # Environment-specific secrets
 │   ├── dev/                # Development environment
 │   ├── test/               # Test environment
@@ -32,6 +34,7 @@ This repository contains Kubernetes manifests for deploying n8n workflow automat
 └── scripts/                # Utility scripts
     ├── apply.sh            # Script to apply configurations
     ├── diff.sh             # Script to show differences
+    ├── cleanup.sh          # Script to clean up resources
     └── generate-secrets.sh # Script to generate secure secrets
 ```
 
@@ -64,6 +67,10 @@ Or use the provided scripts:
 
 # Show differences
 ./scripts/diff.sh staging
+
+# Clean up resources
+./scripts/cleanup.sh test
+./scripts/cleanup.sh all --force  # Clean up all environments without confirmation
 ```
 
 ## Resource Profiles
@@ -78,10 +85,10 @@ The project includes three resource profiles:
 
 Each environment has specific configurations:
 
-- **Dev**: Development environment with debug logging and development-specific secrets
-- **Test**: Testing environment with minimal resources and test-specific secrets
-- **Staging**: Pre-production environment with moderate resources and staging-specific secrets
-- **Production**: Production environment with high availability and production-specific secrets
+- **Dev**: Development environment with debug logging, development-specific secrets and configs
+- **Test**: Testing environment with minimal resources, test-specific secrets and configs
+- **Staging**: Pre-production environment with moderate resources, staging-specific secrets and configs
+- **Production**: Production environment with high availability, production-specific secrets and configs
 
 ## Customization
 
@@ -89,5 +96,6 @@ To customize configurations:
 
 1. Modify resource profiles in `overlays/common/resources-*.yaml`
 2. Update environment variables in `overlays/common/env-*.yaml`
-3. Generate or update secrets in `overlays/common/secrets-*.env`
-4. Add environment-specific patches in `overlays/<environment>/kustomization.yaml`
+3. Update configuration values in `overlays/common/config-*.env`
+4. Generate or update secrets in `overlays/common/secrets-*.env`
+5. Add environment-specific patches in `overlays/<environment>/kustomization.yaml`

@@ -23,5 +23,12 @@ secretGenerator:
       - ../common/secrets-dev.env
     type: Opaque
 
+# Environment-specific configs
+configMapGenerator:
+  - name: n8n-config
+    behavior: merge
+    envs:
+      - ../common/config-dev.env
+
 commonLabels:
   environment: dev

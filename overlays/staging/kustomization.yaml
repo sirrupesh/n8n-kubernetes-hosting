@@ -23,5 +23,12 @@ secretGenerator:
       - ../common/secrets-staging.env
     type: Opaque
 
+# Environment-specific configs
+configMapGenerator:
+  - name: n8n-config
+    behavior: merge
+    envs:
+      - ../common/config-staging.env
+
 commonLabels:
   environment: staging

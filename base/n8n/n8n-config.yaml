@@ -2,15 +2,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: n8n-config
-  namespace: my-ns-101
 data:
   # AWS Configuration
-  certificate-arn: "arn:aws:acm:ap-south-1:170510051021:certificate/d2518321-007f-4e6c-b629-6a6ff8ffc64c"
+  certificate-arn: "${CERTIFICATE_ARN}"
   
   # N8N Configuration
   N8N_PORT: "5678"
   N8N_PROTOCOL: "https"
-  N8N_HOST: "workflow.yourdomain.com"  # Replace with your actual domain
+  N8N_HOST: "${N8N_HOST}"  # Will be replaced by environment-specific value
   
   # Security Settings
   N8N_SECURE_COOKIE: "true"
