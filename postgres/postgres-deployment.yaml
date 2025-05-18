@@ -1,24 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: postgres
-    service: postgres-n8n
   name: postgres
   namespace: n8n
+  labels:
+    app: postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: postgres
-      service: postgres-n8n
+      app.kubernetes.io/part-of: n8n-platform
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
         app: postgres
-        service: postgres-n8n
+        app.kubernetes.io/part-of: n8n-platform
     spec:
       containers:
         - name: postgres
@@ -80,7 +79,6 @@ spec:
               - postgres
             initialDelaySeconds: 30
             periodSeconds: 30
-      restartPolicy: Always
       volumes:
         - name: postgresql-data
           persistentVolumeClaim:

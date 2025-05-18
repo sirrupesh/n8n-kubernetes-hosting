@@ -1,18 +1,15 @@
 #!/bin/bash
+set -e
 
-# Apply base resources
+# Apply resources
 kubectl apply -k .
 
-# Check deployment status
-echo "Checking deployment status..."
-kubectl -n n8n get pods
+# Wait for deployments
+kubectl -n n8n wait --for=condition=available deployment/postgres deployment/n8n --timeout=120s
 
-# Wait for deployments to be ready
-echo "Waiting for deployments to be ready..."
-kubectl -n n8n wait --for=condition=available deployment/postgres --timeout=120s
-kubectl -n n8n wait --for=condition=available deployment/n8n --timeout=120s
-
-echo "Deployment complete! Access n8n through the configured ingress."
+# Show access info
+echo "Deployment complete. Access n8n through the ingress."
+kubectl -n n8n get ingress
 
 # Uncomment to clean up
 # kubectl delete -k .
