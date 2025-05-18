@@ -12,5 +12,16 @@ patchesStrategicMerge:
   - ../common/resources-large.yaml  # Large resource profile
   - ../common/env-prod.yaml         # Production environment variables
 
+# Environment-specific secrets
+secretGenerator:
+  - name: postgres-secret
+    envs:
+      - ../common/secrets-prod.env
+    type: Opaque
+  - name: n8n-secret
+    envs:
+      - ../common/secrets-prod.env
+    type: Opaque
+
 commonLabels:
   environment: prod

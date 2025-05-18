@@ -1,6 +1,6 @@
-# N8N-EKS-Hosting
+# n8n Kubernetes Hosting
 
-This repository contains Kubernetes manifests for deploying n8n workflow automation tool on Amazon EKS using Kustomize with optimized configurations for different environments.
+This repository contains Kubernetes manifests for deploying n8n workflow automation tool using Kustomize with optimized configurations for different environments.
 
 ## Features
 
@@ -8,6 +8,7 @@ This repository contains Kubernetes manifests for deploying n8n workflow automat
 - **Resource Optimization**: Tiered resource profiles (small, medium, large) for different environments
 - **PostgreSQL Database**: Integrated PostgreSQL database configuration
 - **Reusable Components**: Common configurations shared across environments
+- **Environment-specific Secrets**: Separate secrets for each environment
 - **Easy Deployment**: Simple scripts for applying and comparing configurations
 
 ## Project Structure
@@ -22,14 +23,16 @@ This repository contains Kubernetes manifests for deploying n8n workflow automat
 ├── overlays/               # Environment-specific overlays
 │   ├── common/             # Shared configurations
 │   │   ├── resources-*.yaml # Resource profiles (small, medium, large)
-│   │   └── env-*.yaml      # Environment-specific variables
+│   │   ├── env-*.yaml      # Environment-specific variables
+│   │   └── secrets-*.env   # Environment-specific secrets
 │   ├── dev/                # Development environment
 │   ├── test/               # Test environment
 │   ├── staging/            # Staging environment
 │   └── prod/               # Production environment
 └── scripts/                # Utility scripts
     ├── apply.sh            # Script to apply configurations
-    └── diff.sh             # Script to show differences
+    ├── diff.sh             # Script to show differences
+    └── generate-secrets.sh # Script to generate secure secrets
 ```
 
 ## Usage
@@ -37,6 +40,9 @@ This repository contains Kubernetes manifests for deploying n8n workflow automat
 To deploy to a specific environment:
 
 ```bash
+# Generate secure secrets for an environment
+./scripts/generate-secrets.sh dev
+
 # Apply development environment
 kubectl apply -k overlays/dev
 
@@ -72,10 +78,10 @@ The project includes three resource profiles:
 
 Each environment has specific configurations:
 
-- **Dev**: Development environment with debug logging
-- **Test**: Testing environment with minimal resources
-- **Staging**: Pre-production environment with moderate resources
-- **Production**: Production environment with high availability
+- **Dev**: Development environment with debug logging and development-specific secrets
+- **Test**: Testing environment with minimal resources and test-specific secrets
+- **Staging**: Pre-production environment with moderate resources and staging-specific secrets
+- **Production**: Production environment with high availability and production-specific secrets
 
 ## Customization
 
@@ -83,8 +89,5 @@ To customize configurations:
 
 1. Modify resource profiles in `overlays/common/resources-*.yaml`
 2. Update environment variables in `overlays/common/env-*.yaml`
-3. Add environment-specific patches in `overlays/<environment>/kustomization.yaml`
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+3. Generate or update secrets in `overlays/common/secrets-*.env`
+4. Add environment-specific patches in `overlays/<environment>/kustomization.yaml`

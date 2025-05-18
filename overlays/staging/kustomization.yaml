@@ -12,5 +12,16 @@ patchesStrategicMerge:
   - ../common/resources-medium.yaml  # Medium resource profile
   - ../common/env-staging.yaml       # Staging environment variables
 
+# Environment-specific secrets
+secretGenerator:
+  - name: postgres-secret
+    envs:
+      - ../common/secrets-staging.env
+    type: Opaque
+  - name: n8n-secret
+    envs:
+      - ../common/secrets-staging.env
+    type: Opaque
+
 commonLabels:
   environment: staging

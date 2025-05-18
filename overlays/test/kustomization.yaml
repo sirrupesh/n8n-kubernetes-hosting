@@ -12,5 +12,16 @@ patchesStrategicMerge:
   - ../common/resources-small.yaml  # Small resource profile
   - ../common/env-test.yaml         # Test environment variables
 
+# Environment-specific secrets
+secretGenerator:
+  - name: postgres-secret
+    envs:
+      - ../common/secrets-test.env
+    type: Opaque
+  - name: n8n-secret
+    envs:
+      - ../common/secrets-test.env
+    type: Opaque
+
 commonLabels:
   environment: test
