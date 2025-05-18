@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app: postgres
     service: postgres-n8n
   name: postgres
   namespace: n8n
@@ -9,31 +10,31 @@ spec:
   replicas: 1
   selector:
     matchLabels:
+      app: postgres
       service: postgres-n8n
   strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
       labels:
+        app: postgres
         service: postgres-n8n
     spec:
       containers:
-        - image: postgres:11
-          name: postgres
+        - name: postgres
+          image: postgres:14-alpine
           resources:
             limits:
-              cpu: "2"
-              memory: 2Gi
-            requests:
-              cpu: "500m"
+              cpu: "1"
               memory: 1Gi
+            requests:
+              cpu: "250m"
+              memory: 512Mi
           ports:
             - containerPort: 5432
+              name: postgres
           volumeMounts:
-            - name: postgresql-pv
+            - name: postgresql-data
               mountPath: /var/lib/postgresql/data
             - name: init-data
               mountPath: /docker-entrypoint-initdb.d/init-n8n-user.sh
@@ -63,13 +64,25 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_NON_ROOT_PASSWORD
-            - name:   POSTGRES_HOST
-              value: postgres-service
-            - name: POSTGRES_PORT
-              value: '5432'
+          readinessProbe:
+            exec:
+              command:
+              - pg_isready
+              - -U
+              - postgres
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+              - pg_isready
+              - -U
+              - postgres
+            initialDelaySeconds: 30
+            periodSeconds: 30
       restartPolicy: Always
       volumes:
-        - name: postgresql-pv
+        - name: postgresql-data
           persistentVolumeClaim:
             claimName: postgresql-pv
         - name: init-data
