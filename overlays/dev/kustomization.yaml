@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Development environment configuration
+namespace: n8n-dev
+
+resources:
+  - namespace.yaml  # Namespace definition
+  - ../../base      # Base resources
+
+patchesStrategicMerge:
+  - ../common/resources-small.yaml  # Small resource profile
+  - ../common/env-dev.yaml          # Development environment variables
+
+commonLabels:
+  environment: dev

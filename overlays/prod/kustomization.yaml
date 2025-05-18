@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Production environment configuration
+namespace: n8n-prod
+
+resources:
+  - namespace.yaml  # Namespace definition
+  - ../../base      # Base resources
+
+patchesStrategicMerge:
+  - ../common/resources-large.yaml  # Large resource profile
+  - ../common/env-prod.yaml         # Production environment variables
+
+commonLabels:
+  environment: prod

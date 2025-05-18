@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# PostgreSQL database resources
+resources:
+  - postgres-pvc.yaml        # Persistent volume claim
+  - postgres-secret.yaml     # Secrets
+  - postgres-config.yaml     # Configuration
+  - postgres-deployment.yaml # Deployment
+  - postgres-service.yaml    # Service

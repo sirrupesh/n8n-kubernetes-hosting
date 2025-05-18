@@ -1,28 +1,90 @@
-# n8n-kubernetes-hosting
+# N8N-EKS-Hosting
 
-Get up and running with n8n on the following platforms:
+This repository contains Kubernetes manifests for deploying n8n workflow automation tool on Amazon EKS using Kustomize with optimized configurations for different environments.
 
-* [AWS](https://docs.n8n.io/hosting/server-setups/aws/)
-* [Azure](https://docs.n8n.io/hosting/server-setups/azure/)
-* [Google Cloud Platform](https://docs.n8n.io/hosting/server-setups/google-cloud/)
+## Features
 
-If you have questions after trying the tutorials, check out the [forums](https://community.n8n.io/).
+- **Multi-environment Support**: Preconfigured environments for dev, test, staging, and production
+- **Resource Optimization**: Tiered resource profiles (small, medium, large) for different environments
+- **PostgreSQL Database**: Integrated PostgreSQL database configuration
+- **Reusable Components**: Common configurations shared across environments
+- **Easy Deployment**: Simple scripts for applying and comparing configurations
 
-## Prerequisites
+## Project Structure
 
-Self-hosting n8n requires technical knowledge, including:
+```
+.
+├── base/                   # Base configurations shared across all environments
+│   ├── n8n/                # n8n specific resources
+│   ├── postgres/           # PostgreSQL database resources
+│   ├── kustomization.yaml  # Base kustomization file
+│   └── storageclass.yaml   # Storage class definition
+├── overlays/               # Environment-specific overlays
+│   ├── common/             # Shared configurations
+│   │   ├── resources-*.yaml # Resource profiles (small, medium, large)
+│   │   └── env-*.yaml      # Environment-specific variables
+│   ├── dev/                # Development environment
+│   ├── test/               # Test environment
+│   ├── staging/            # Staging environment
+│   └── prod/               # Production environment
+└── scripts/                # Utility scripts
+    ├── apply.sh            # Script to apply configurations
+    └── diff.sh             # Script to show differences
+```
 
-* Setting up and configuring servers and containers
-* Managing application resources and scaling
-* Securing servers and applications
-* Configuring n8n
+## Usage
 
-n8n recommends self-hosting for expert users. Mistakes can lead to data loss, security issues, and downtime. If you aren't experienced at managing servers, n8n recommends [n8n Cloud](https://n8n.io/cloud/).
+To deploy to a specific environment:
 
-## Contributions
+```bash
+# Apply development environment
+kubectl apply -k overlays/dev
 
-For common changes, please open a PR to `main` branch and we will merge this
-into cloud provider specific branches.
+# Apply test environment
+kubectl apply -k overlays/test
 
-If you have a contribution specific to a cloud provider, please open your PR to
-the relevant branch.
+# Apply staging environment
+kubectl apply -k overlays/staging
+
+# Apply production environment
+kubectl apply -k overlays/prod
+```
+
+Or use the provided scripts:
+
+```bash
+# Apply configuration
+./scripts/apply.sh dev
+
+# Show differences
+./scripts/diff.sh staging
+```
+
+## Resource Profiles
+
+The project includes three resource profiles:
+
+- **Small** (dev, test): 1 replica, 512Mi memory, 200m CPU
+- **Medium** (staging): 2 replicas, 1Gi memory, 500m CPU
+- **Large** (prod): 3 replicas, 2Gi memory, 1000m CPU
+
+## Environment Configurations
+
+Each environment has specific configurations:
+
+- **Dev**: Development environment with debug logging
+- **Test**: Testing environment with minimal resources
+- **Staging**: Pre-production environment with moderate resources
+- **Production**: Production environment with high availability
+
+## Customization
+
+To customize configurations:
+
+1. Modify resource profiles in `overlays/common/resources-*.yaml`
+2. Update environment variables in `overlays/common/env-*.yaml`
+3. Add environment-specific patches in `overlays/<environment>/kustomization.yaml`
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
