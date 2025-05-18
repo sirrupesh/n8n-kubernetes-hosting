@@ -3,10 +3,11 @@ kind: Kustomization
 
 resources:
   - n8n-config.yaml
-  - n8n-claim0-persistentvolumeclaim.yaml
+  - n8n-pvc.yaml
   - n8n-deployment.yaml
   - n8n-service.yaml
   - n8n-ingress.yaml
+  - n8n-secret.yaml
 
 replacements:
   - source:
