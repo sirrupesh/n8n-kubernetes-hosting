@@ -33,8 +33,9 @@ This repository contains Kubernetes manifests for deploying n8n workflow automat
 │   └── prod/               # Production environment
 └── scripts/                # Utility scripts
     ├── apply.sh            # Script to apply configurations
-    ├── diff.sh             # Script to show differences
+    ├── check-status.sh     # Script to check deployment status
     ├── cleanup.sh          # Script to clean up resources
+    ├── diff.sh             # Script to show differences
     └── generate-secrets.sh # Script to generate secure secrets
 ```
 
@@ -67,6 +68,9 @@ Or use the provided scripts:
 
 # Show differences
 ./scripts/diff.sh staging
+
+# Check deployment status
+./scripts/check-status.sh dev
 
 # Clean up resources
 ./scripts/cleanup.sh test
